@@ -150,6 +150,8 @@ controller.login = async function(req, res) {
       // Se a senha estiver errada, retorna
       // HTTP 401: Unauthorized
       if(! passwordIsValid) return res.status(401).end()
+     //Remove o campo "password" do objeto user antes de usa-lo no token de resposta da requisição
+      delete user.password   
 
       // Usuário e senha OK, passamos ao procedimento de gerar o token
       const token = jwt.sign(
