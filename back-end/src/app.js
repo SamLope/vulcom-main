@@ -9,14 +9,13 @@ const app = express()
 
 import cors from 'cors'
 
-//configurando o CORS para que o back-end aceite
-//requisições vindas das origens indicadas pela
-//variavel de ambientes ALLOWED_ORIGINS
-
+// Configurando o CORS para que o back-end aceite
+// requisições vindas das origens indicadas pela
+// variável de ambiente ALLOWED_ORIGINS
 app.use(cors({
-    origin: process.env.ALLOWED_ORIGINS.split(','),
-    //Envia de fato qualquer cookies gerados para o front-end
-    credentials: true
+  origin: process.env.ALLOWED_ORIGINS.split(','),
+  // Envia de fato quaisquer cookies gerados para o front-end
+  credentials: true
 }))
 
 app.use(logger('dev'))
@@ -26,7 +25,7 @@ app.use(cookieParser())
 
 /*********** ROTAS DA API **************/
 
-//Middleware de verificação do token de autorização
+// Middleware de verificação do token de autorização
 import auth from './middleware/auth.js'
 app.use(auth)
 
