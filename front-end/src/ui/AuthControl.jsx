@@ -22,25 +22,25 @@ export default function AuthControl() {
   async function handleLogoutButtonClick() {
     if(await askForConfirmation('Deseja realmente sair?')) {
       showWaiting(true)
-      try{
-        //Faz uma requisição ao back-end solicitando
-        //exclusão do cookie com token de autorização
-        await myfetch.post('./users/logout')
+      try {
+        // Faz uma requisição ao back-end solicitando a
+        // exclusão do cookie com o token de autorização
+        await myfetch.post('/users/logout')
 
-        //Apaga as informações em memória sobre o usuário
-        //autenticado
-        setAuthUser
+        // Apaga as informações em memória sobre o usuário
+        // autenticado
+        setAuthUser(null)
 
-        //Redireciona para a página de login
+        // Redireciona para a página de login
         navigate('/login')
-        
-        }
-        catch(error){
+      }
+      catch(error) {
 
       }
-      finally{
+      finally {
         showWaiting(false)
       }
+
     }
   }
 

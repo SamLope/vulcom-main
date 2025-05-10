@@ -7,8 +7,8 @@ const controller = {}     // Objeto vazio
 controller.create = async function(req, res) {
   try {
 
-    //Somente usuarios administradores podem acessar este recurso
-    //HTTP 403: Forbinde
+    // Somente usuários administradores podem acessar este recurso
+    // HTTP 403: Forbidden(
     if(! req?.authUser?.is_admin) return res.status(403).end()
 
     // Verifica se existe o campo "password" e o
@@ -32,10 +32,10 @@ controller.create = async function(req, res) {
 
 controller.retrieveAll = async function(req, res) {
   try {
-    //Somente usuarios administradores podem acessar este recurso
-    //HTTP 403: Forbinde
-    if(! req?.authUser?.is_admin) return res.status(403).end()
 
+    // Somente usuários administradores podem acessar este recurso
+    // HTTP 403: Forbidden
+    if(! req?.authUser?.is_admin) return res.status(403).end()
 
     const result = await prisma.user.findMany(
       // Omite o campo "password" do resultado
@@ -57,9 +57,12 @@ controller.retrieveAll = async function(req, res) {
 controller.retrieveOne = async function(req, res) {
   try {
 
-    //Somente usuarios administradores podem acessar este recurso
-    //HTTP 403: Forbinde
-    if(! (req?.authUser?.is_admin)|| Number(req?.authUser?.id) === Number(req.params.id)) return res.status(403).end()
+    // Somente usuários administradores ou o próprio usuário
+    // autenticado podem acessar este recurso
+    // HTTP 403: Forbidden
+    if(! (req?.authUser?.is_admin || 
+      Number(req?.authUser?.id) === Number(req.params.id))) 
+      return res.status(403).end()
 
     const result = await prisma.user.findUnique({
       // Omite o campo "password" do resultado
@@ -84,10 +87,9 @@ controller.retrieveOne = async function(req, res) {
 controller.update = async function(req, res) {
   try {
 
-    //Somente usuarios administradores podem acessar este recurso
-    //HTTP 403: Forbinde
+    // Somente usuários administradores podem acessar este recurso
+    // HTTP 403: Forbidden
     if(! req?.authUser?.is_admin) return res.status(403).end()
-
 
     // Verifica se existe o campo "password" e o
     // criptografa antes de criar o novo usuário
@@ -116,8 +118,8 @@ controller.update = async function(req, res) {
 controller.delete = async function(req, res) {
   try {
 
-    //Somente usuarios administradores podem acessar este recurso
-    //HTTP 403: Forbinde
+    // Somente usuários administradores podem acessar este recurso
+    // HTTP 403: Forbidden
     if(! req?.authUser?.is_admin) return res.status(403).end()
 
     await prisma.user.delete({
@@ -209,10 +211,10 @@ controller.login = async function(req, res) {
   }
 }
 
-controller.logout = function(req, res){
-  //Apaga no front-end o cookie que armazena o token
+controller.logout = function(req, res) {
+  // Apaga no front-end o cookie que armazena o token
   res.clearCookie(process.env.AUTH_COOKIE_NAME)
-  //HTTP 204: No content
+  // HTTP 204: No Content
   res.status(204).end()
 }
 
